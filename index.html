@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUN BLAST ZONE</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+text-align:center;
+background:#f5f5f5;
+padding:20px;
+}
+
+h1{
+color:#ff6600;
+}
+
+input{
+padding:10px;
+font-size:18px;
+width:250px;
+}
+
+button{
+padding:12px 25px;
+font-size:18px;
+margin-top:15px;
+cursor:pointer;
+}
+
+#result{
+margin-top:25px;
+font-size:24px;
+font-weight:bold;
+}
+
+#winners{
+margin-top:20px;
+background:white;
+padding:15px;
+border-radius:10px;
+max-width:700px;
+margin-left:auto;
+margin-right:auto;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎡 FUN BLAST ZONE 🎡</h1>
+
+<input type="text" id="name" placeholder="Enter Customer Name">
+
+<br>
+
+<button onclick="spin()">SPIN</button>
+
+<div id="result">READY TO SPIN</div>
+
+<div id="winners">
+<h2>Last Winners</h2>
+<div id="winnerList"></div>
+</div>
+
+<script>
+
+let winners=[];
+
+function coupon(){
+let letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let code="FBZ-";
+
+for(let i=0;i<3;i++){
+code+=letters[Math.floor(Math.random()*26)];
+}
+
+for(let i=0;i<4;i++){
+code+=Math.floor(Math.random()*10);
+}
+
+return code;
+}
+
+function spin(){
+
+let customer=document.getElementById("name").value;
+
+if(customer===""){
+alert("Enter Customer Name");
+return;
+}
+
+let rewards=[
+"Better Luck Next Time",
+"5% Discount",
+"Free Lemonade",
+"Extra Spin",
+"10% Combo Discount",
+"Free Selected Game"
+];
+
+let weights=[40,20,15,10,10,5];
+
+let total=weights.reduce((a,b)=>a+b,0);
+
+let random=Math.random()*total;
+
+let reward="";
+
+for(let i=0;i<rewards.length;i++){
+if(random<weights[i]){
+reward=rewards[i];
+break;
+}
+random-=weights[i];
+}
+
+let c=coupon();
+
+document.getElementById("result").innerHTML=
+reward+"<br>Coupon: "+c;
+
+winners.unshift(
+customer+" | "+reward+" | "+c
+);
+
+let html="";
+
+for(let i=0;i<Math.min(10,winners.length);i++){
+html+=winners[i]+"<br>";
+}
+
+document.getElementById("winnerList").innerHTML=html;
+
+document.getElementById("name").value="";
+}
+
+</script>
+
+</body>
+</html>
